@@ -42,12 +42,12 @@ export function RegisterPage() {
       })
       .catch((error) => toast.error(`${error}`));
   }
-
+  const comeBack = () => navigate(-1);
   return (
     <body>
       <S.Header>
         <img src={imgLogo} alt="Logo" />
-        <button onClick={() => navigate("/")}>Voltar</button>
+        <button onClick={comeBack}>Voltar</button>
       </S.Header>
       <main>
         <S.Section>

@@ -28,7 +28,7 @@ export function LoginPage() {
         toast.error(`${error}`);
       });
   }
-  const comeBack = () => navigate(-1);
+
   return (
     <main>
       <S.DivLogo>
@@ -58,7 +58,7 @@ export function LoginPage() {
         <div>
           <p>Ainda não possui uma conta?</p>
         </div>
-        <button onClick={comeBack}>Cadastre-se</button>
+        <button onClick={() => navigate("/register")}>Cadastre-se</button>
       </S.Section>
       <ToastContainer />
     </main>
