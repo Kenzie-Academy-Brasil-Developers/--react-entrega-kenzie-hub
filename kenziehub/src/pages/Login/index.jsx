@@ -1,32 +1,43 @@
-import axios from "axios";
 import * as S from "./style.js";
 import imgLogo from "../../assets/Logo.svg";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import "react-toastify/dist/ReactToastify.min.css";
+import { api } from "../../services/api.js";
 
 export function LoginPage() {
-  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  function handleUser(user) {
-    console.log({ ...user });
-    axios
-      .post("https://kenziehub.herokuapp.com/sessions", { ...user })
-      .then((response) => {
-        console.log(response);
-        window.localStorage.clear();
-        window.localStorage.setItem("authToken", response.data.token);
-        toast.success("Login realizado com sucesso");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 3000);
-      })
-      .catch((error) => {
-        toast.error(`${error}`);
-      });
+  const formSchema = yup.object().shape({
+    email: yup.string().required("Email obrigatório").email("Email inválido"),
+    password: yup.string().required("Senha obrigatória"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  async function handleUser(user) {
+    try {
+      const response = await api.post("/sessions", user);
+      window.localStorage.clear();
+      window.localStorage.setItem("authToken", response.data.token);
+      toast.success("Login realizado com sucesso");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
+    } catch (error) {
+      toast.error(`${error}`);
+    }
   }
 
   return (
@@ -46,6 +57,8 @@ export function LoginPage() {
             placeholder="Digite seu email"
             {...register("email")}
           />
+          {errors.email?.message}
+
           <label htmlFor="passwordEmail">Senha</label>
           <input
             type="password"
@@ -53,12 +66,16 @@ export function LoginPage() {
             placeholder="Digite sua senha"
             {...register("password")}
           />
+          {errors.password?.message}
+
           <button type="submit">Entrar</button>
         </form>
         <div>
           <p>Ainda não possui uma conta?</p>
         </div>
-        <button onClick={() => navigate("/register")}>Cadastre-se</button>
+        <Link to="/register" className="Link">
+          Cadastre-se
+        </Link>
       </S.Section>
       <ToastContainer />
     </main>

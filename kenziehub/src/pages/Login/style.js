@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const DivLogo = styled.div`
   padding: 32px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const Section = styled.section`
@@ -9,7 +11,7 @@ export const Section = styled.section`
   margin-top: 32px;
   margin: 0 auto;
   width: 339px;
-  height: 445px;
+  height: 470px;
   background-color: #212529;
   box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
@@ -48,7 +50,8 @@ export const Section = styled.section`
       color: #ffffff;
     }
   }
-  button {
+  .Link {
+    text-decoration: none;
     margin-top: 12px;
     width: 100%;
     height: 40px;
@@ -57,7 +60,7 @@ export const Section = styled.section`
     border: 1.2182px solid #868e96;
     border-radius: 4.06066px;
   }
-  button:hover {
+  .Link:hover {
     background: #343b41;
     border: 1.2182px solid #343b41;
   }

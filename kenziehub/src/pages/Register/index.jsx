@@ -1,12 +1,12 @@
 import * as S from "./style.js";
-import axios from "axios";
 import imgLogo from "../../assets/Logo.svg";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { api } from "../../services/api.js";
 
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -29,25 +29,26 @@ export function RegisterPage() {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
+
   const navigate = useNavigate();
 
-  function onSubmit(data) {
-    axios
-      .post("https://kenziehub.herokuapp.com/users", data)
-      .then((response) => {
-        toast.success("Usuario cadastrado com sucesso");
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      })
-      .catch((error) => toast.error(`${error}`));
+  async function onSubmit(data) {
+    try {
+      const response = await api.post("/users", data);
+      toast.success("Usuario cadastrado com sucesso");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } catch (error) {
+      toast.error(`${error}`);
+    }
   }
-  const comeBack = () => navigate(-1);
+
   return (
     <body>
       <S.Header>
         <img src={imgLogo} alt="Logo" />
-        <button onClick={comeBack}>Voltar</button>
+        <Link to="/">Voltar</Link>
       </S.Header>
       <main>
         <S.Section>

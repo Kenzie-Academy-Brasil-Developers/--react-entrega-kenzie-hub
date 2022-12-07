@@ -39,6 +39,8 @@ export const Section = styled.section`
     padding: 16px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
   }
   form {
