@@ -1,27 +1,5 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
-  padding-left: 32px;
-  padding-right: 32px;
-  margin-top: 50px;
-  display: flex;
-  justify-content: space-between;
-
-  button {
-    cursor: pointer;
-    width: 79.54px;
-    height: 31.95px;
-    background: #212529;
-    border: none;
-    border-radius: 3.19812px;
-    color: #ffffff;
-  }
-  @media (min-width: 700px) {
-    padding-left: 82px;
-    padding-right: 82px;
-  }
-`;
-
 export const Section = styled.section`
   margin: 20px auto;
   width: 330px;

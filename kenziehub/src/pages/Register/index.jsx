@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api } from "../../services/api.js";
+import { Input } from "../../components/Input/style.js";
+import { HeaderRegister } from "../../components/Header/style.js";
 
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -45,11 +47,11 @@ export function RegisterPage() {
   }
 
   return (
-    <body>
-      <S.Header>
+    <>
+      <HeaderRegister>
         <img src={imgLogo} alt="Logo" />
         <Link to="/">Voltar</Link>
-      </S.Header>
+      </HeaderRegister>
       <main>
         <S.Section>
           <div>
@@ -58,7 +60,7 @@ export function RegisterPage() {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="nameUser">Nome</label>
-            <input
+            <Input
               type="text"
               id="nameUser"
               placeholder="Digite seu nome"
@@ -67,7 +69,7 @@ export function RegisterPage() {
             {errors.name?.message}
 
             <label htmlFor="emailUser">Email</label>
-            <input
+            <Input
               type="email"
               id="emailUser"
               placeholder="Digite seu email"
@@ -76,7 +78,7 @@ export function RegisterPage() {
             {errors.email?.message}
 
             <label htmlFor="passwordUser">Senha</label>
-            <input
+            <Input
               type="password"
               id="passwordUser"
               placeholder="Digite sua senha"
@@ -85,7 +87,7 @@ export function RegisterPage() {
             {errors.password?.message}
 
             <label htmlFor="passwordConfirm">Confirmar senha</label>
-            <input
+            <Input
               type="password"
               id="passwordConfirm"
               placeholder="Confirme sua senha"
@@ -94,7 +96,7 @@ export function RegisterPage() {
             {errors.passwordConfirm?.message}
 
             <label htmlFor="bioUser">Bio</label>
-            <input
+            <Input
               type="text"
               id="bioUser"
               placeholder="Digite sua biografia"
@@ -103,7 +105,7 @@ export function RegisterPage() {
             {errors.bio?.message}
 
             <label htmlFor="contactUser">Contato</label>
-            <input
+            <Input
               type="text"
               id="contactUser"
               placeholder="Insira o meio de contato"
@@ -127,6 +129,6 @@ export function RegisterPage() {
         </S.Section>
         <ToastContainer />
       </main>
-    </body>
+    </>
   );
 }

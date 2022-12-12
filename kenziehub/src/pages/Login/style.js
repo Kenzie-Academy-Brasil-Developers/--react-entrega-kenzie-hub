@@ -11,12 +11,12 @@ export const Section = styled.section`
   margin-top: 32px;
   margin: 0 auto;
   width: 339px;
-  height: 470px;
   background-color: #212529;
   box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 
   div {
+    text-align: center;
     padding: 16px;
   }
   form {
@@ -50,7 +50,7 @@ export const Section = styled.section`
       color: #ffffff;
     }
   }
-  .Link {
+  a {
     text-decoration: none;
     margin-top: 12px;
     width: 100%;
@@ -59,8 +59,11 @@ export const Section = styled.section`
     background: #868e96;
     border: 1.2182px solid #868e96;
     border-radius: 4.06066px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .Link:hover {
+  a:hover {
     background: #343b41;
     border: 1.2182px solid #343b41;
   }

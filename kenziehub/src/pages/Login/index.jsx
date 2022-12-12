@@ -1,22 +1,24 @@
 import * as S from "./style.js";
 import imgLogo from "../../assets/Logo.svg";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import "react-toastify/dist/ReactToastify.min.css";
-import { api } from "../../services/api.js";
+
+import { Input } from "../../components/Input/style.js";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/UserContext/AuthContext";
 
 export function LoginPage() {
-  const navigate = useNavigate();
-
   const formSchema = yup.object().shape({
     email: yup.string().required("Email obrigatório").email("Email inválido"),
     password: yup.string().required("Senha obrigatória"),
   });
+
+  const { handleUser } = useContext(AuthContext);
 
   const {
     register,
@@ -25,20 +27,6 @@ export function LoginPage() {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
-
-  async function handleUser(user) {
-    try {
-      const response = await api.post("/sessions", user);
-      window.localStorage.clear();
-      window.localStorage.setItem("authToken", response.data.token);
-      toast.success("Login realizado com sucesso");
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
-    } catch (error) {
-      toast.error(`${error}`);
-    }
-  }
 
   return (
     <main>
@@ -51,7 +39,7 @@ export function LoginPage() {
         </div>
         <form onSubmit={handleSubmit(handleUser)}>
           <label htmlFor="loginEmail">Email</label>
-          <input
+          <Input
             type="email"
             id="loginEmail"
             placeholder="Digite seu email"
@@ -60,7 +48,7 @@ export function LoginPage() {
           {errors.email?.message}
 
           <label htmlFor="passwordEmail">Senha</label>
-          <input
+          <Input
             type="password"
             id="passwordEmail"
             placeholder="Digite sua senha"
@@ -73,9 +61,7 @@ export function LoginPage() {
         <div>
           <p>Ainda não possui uma conta?</p>
         </div>
-        <Link to="/register" className="Link">
-          Cadastre-se
-        </Link>
+        <Link to="/register">Cadastre-se</Link>
       </S.Section>
       <ToastContainer />
     </main>

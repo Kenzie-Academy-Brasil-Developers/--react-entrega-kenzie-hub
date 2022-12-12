@@ -1,76 +1,90 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import * as S from "./style.js";
 import imgLogo from "../../assets/Logo.svg";
 import imgAdd from "../../assets/+.svg";
-import imgRemove from "../../assets/Vector.svg";
 import { useNavigate } from "react-router-dom";
+import { HeaderDashboard } from "../../components/Header/style.js";
+import { AuthContext } from "../../contexts/UserContext/AuthContext.jsx";
+import { ModalCreate } from "../../components/Modal/ModalCreateTech/index.jsx";
+import { CardTech } from "../../components/CardTech/index.jsx";
+import { TechContext } from "../../contexts/TechContext/TechContext.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import { ModalEdit } from "../../components/Modal/ModalEditTech/index.jsx";
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState([]);
-  const token = window.localStorage.getItem("authToken");
-  const modal = document.querySelector("dialog");
+
+  const { userAuth } = useContext(AuthContext);
+  const {
+    PostTech,
+    PutTech,
+    tech,
+    modalCreateTech,
+    setModalCreateTech,
+    modalEditTech,
+    setModalEditTech,
+    setStateId,
+    DeleteTech,
+  } = useContext(TechContext);
 
   function Logout() {
     window.localStorage.clear();
     navigate("/");
   }
-  useEffect(() => {
-    axios
-      .get("https://kenziehub.herokuapp.com/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
-  console.log(user);
   return (
-    <body>
-      <S.Header>
+    <>
+      <HeaderDashboard>
         <img src={imgLogo} alt="Logo" />
         <button onClick={Logout}>Sair</button>
-      </S.Header>
+      </HeaderDashboard>
       <main>
         <S.SectionUser>
-          <h2>Olá, {user.name}</h2>
-          <span>{user.course_module}</span>
+          <h2>Olá, {userAuth.name}</h2>
+          <span>{userAuth.course_module}</span>
         </S.SectionUser>
         <S.SectionTech>
           <div>
             <h2>Tecnologias</h2>
-            <button onClick={() => modal.showModal()}>
+            <button onClick={() => setModalCreateTech(true)}>
               <img src={imgAdd} alt="" />
             </button>
           </div>
           <ul>
-            <li>teste</li>
+            {!tech ? (
+              <li>
+                <h1>Nehuma tecnologia cadastrada</h1>
+              </li>
+            ) : (
+              tech.map((elem) => (
+                <CardTech
+                  key={elem.id}
+                  title={elem.title}
+                  status={elem.status}
+                  setModalEditTech={setModalEditTech}
+                  setStateId={setStateId}
+                  id={elem.id}
+                />
+              ))
+            )}
           </ul>
-          <dialog>
-            <div>
-              <h3>Cadastrar Tecnologia</h3>
-              <button onClick={() => modal.close()}>X</button>
-            </div>
-            <form>
-              <label htmlFor="">Nome</label>
-              <input type="text" placeholder="Insira uma tecnologia" />
-
-              <label htmlFor="">Selecionar status</label>
-              <select name="" id="">
-                <option value="Iniciante">Iniciante</option>
-                <option value="Intermediário">Intermediário</option>
-                <option value="Avançado">Avançado</option>
-              </select>
-              <button type="submit">Cadastrar Tecnologia</button>
-            </form>
-          </dialog>
+          {modalCreateTech ? (
+            <ModalCreate
+              PostTech={PostTech}
+              setModalCreateTech={setModalCreateTech}
+            />
+          ) : null}
+          {modalEditTech ? (
+            <ModalEdit
+              PutTech={PutTech}
+              DeleteTech={DeleteTech}
+              setModalEditTech={setModalEditTech}
+            />
+          ) : null}
         </S.SectionTech>
+        <ToastContainer />
       </main>
-    </body>
+    </>
   );
 }
